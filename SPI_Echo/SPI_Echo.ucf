@@ -1,0 +1,12 @@
+
+
+NET "CS" IOSTANDARD = LVCMOS25;
+
+
+
+# PlanAhead Generated physical constraints 
+
+NET "CS" LOC = C6;
+NET "MISO" LOC = B6;
+NET "MOSI" LOC = C5;
+NET "SCLK" LOC = B7;
