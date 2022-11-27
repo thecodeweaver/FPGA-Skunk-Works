@@ -28,11 +28,11 @@ module clock_divider(
 
     always @(posedge clock)
     begin
-        counter = counter + 28'd1;
+        counter <= counter + 28'd1;
 
 
         if (counter >= (DIVISOR - 1))
-            counter = 28'd0;
+            counter <= 28'd0;
 
         if (counter < (DIVISOR / 2)) // Clock has a 50% duty cycle
             new_clock <= 1'b1; // Output is on for first half of cycle
