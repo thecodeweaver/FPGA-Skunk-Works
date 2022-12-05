@@ -21,7 +21,8 @@
 module stopwatch(
     input clk,
     input button_start,
-	 input button_reset
+    input button_stop,
+	input button_reset
     );
 
 
