@@ -21,7 +21,7 @@
 module time_counter(
     input wire clock,
 	input wire reset,
-    input wire hold_clock,
+    input wire hold_count,
     output reg [5:0] minutes,
     output reg [5:0] seconds
     );
@@ -29,18 +29,19 @@ module time_counter(
     always @(posedge clock)
     begin
 
-        if (!hold_clock)
+        if (reset) // Set minutes and seconds to 0 if reset signal is high
         begin
-           if (reset) // Set minutes and seconds to 0 if reset signal is high
+            minutes <= 0;
+            seconds <= 0;
+        end
+        else
+        begin
+            if (!hold_count)
             begin
-                minutes <= 0;
-                seconds <= 0;
-            end
-            else
-            begin
+
                 seconds <= seconds + 1;
 
-                if (minutes == 61) // Reset when at 60 minutes, 59 seconds
+                if (minutes == 60) // Reset when at 60 minutes, 59 seconds
                 begin
                     minutes <= 0;
                     seconds <= 0;

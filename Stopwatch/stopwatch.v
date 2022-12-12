@@ -23,7 +23,7 @@ module stopwatch(
     input button_start,
     input button_stop,
 	input button_reset
-    );
+);
 
 
 endmodule
