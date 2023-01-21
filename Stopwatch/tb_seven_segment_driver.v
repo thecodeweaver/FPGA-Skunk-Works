@@ -1,6 +1,19 @@
 `timescale 1ns / 1ps
 /*
 Testbench for Seven Segement Driver module
+
+Test procedure
+*** SECONDS ***
+1. Set register (0-59)
+2. Wait for propagation
+3. Wait for 10's place anode to go LOW
+4. Check display_out to make sure it matches the 10's place of the input number
+5. Wait for 1's place anode to go LOW
+6. Check display_out to make sure it matches 1's place of input #
+7. Move to next number
+
+*** MINUTES ***
+Same procedure for seconds but input range is 0-99
 */
 
 module tb_seven_segment_driver;
