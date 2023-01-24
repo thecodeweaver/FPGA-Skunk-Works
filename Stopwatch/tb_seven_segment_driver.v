@@ -54,11 +54,51 @@ module tb_seven_segment_driver;
     test_cases[8] = 7'b0000000; // 8
     test_cases[9] = 7'b0000100; // 9
 
-    // Blocks to check the value of display_out depending on which digit is enabled
-    
+    // Block to check the value of display_out depending on which digit is enabled
+	forever
+	begin
+		case (anode_signals)
+			// 10's place of the seconds input
+			4'b1101:
+				begin
+					if (display_out != test_cases[(seconds / 10)])
+					begin
+						$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds / 10)]);
+					end
+				end
+				
+			// 1's place of the seconds input
+			4'b1110:
+				begin
+					if (display_out != test_cases[(seconds % 10)])
+					begin
+						$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
+					end
+				end
+				
+			// 10's place of minutes input
+			4'b0111:
+				begin
+					if (display_out != test_cases[(minutes / 10)])
+					begin
+						$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes / 10)]);
+					end
+				end
+			
+			// 1's place of minutes input
+			4'b1011:
+				begin
+					if (display_out != test_cases[(minutes / 10)])
+					begin
+						$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
+					end
+				end				
+		endcase
+	end
 
     // Generate stimulus
-    initial begin
+    initial
+	begin
         // Initialize inputs
         reset <= 1;
         clock <= 0;
@@ -81,9 +121,12 @@ module tb_seven_segment_driver;
             #5; // Propagation delay
             test_number <= test_number + 1;
         end
+		
+		seconds <= 6'd0;
 
         // Test the minutes input
         test_number = 6'd0;
+		repeat(100)
         begin
             seconds <= test_number;
             #5; // Propagation delay
