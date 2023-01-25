@@ -1,3 +1,5 @@
 # ModelSim files
 work/
 modelsim.ini
+*.bak
+*.opt
