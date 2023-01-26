@@ -3,3 +3,4 @@ work/
 modelsim.ini
 *.bak
 *.opt
+*.wlf

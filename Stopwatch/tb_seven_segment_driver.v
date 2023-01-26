@@ -50,43 +50,42 @@ module tb_seven_segment_driver;
     always #10 clock = ~clock;
 
     // Block to check the value of display_out depending on which digit is enabled
-	initial begin
-		forever begin
-			case (anode_signals)
-				// 10's place of the seconds input
-				4'b1101:
-					begin
-						if (display_out != test_cases[(seconds / 10)]) begin
-							$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds / 10)]);
-						end
-					end
+	// Changed to run at every clock cycle to avoid infinite loop?
+	always @(posedge clock) begin
+		case (anode_signals)
+			// 10's place of the seconds input
+			4'b1101:
+			begin
+				if (display_out != test_cases[(seconds / 10)]) begin
+					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds / 10)]);
+				end
+			end
+						
+			// 1's place of the seconds input
+			4'b1110:
+			begin
+				if (display_out != test_cases[(seconds % 10)]) begin
+					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
+				end
+			end
+						
+			// 10's place of minutes input
+			4'b0111:
+			begin
+				if (display_out != test_cases[(minutes / 10)]) begin
+					$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes / 10)]);
+				end
+			end
 					
-				// 1's place of the seconds input
-				4'b1110:
-					begin
-						if (display_out != test_cases[(seconds % 10)]) begin
-							$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
-						end
-					end
-					
-				// 10's place of minutes input
-				4'b0111:
-					begin
-						if (display_out != test_cases[(minutes / 10)]) begin
-							$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes / 10)]);
-						end
-					end
-				
-				// 1's place of minutes input
-				4'b1011:
-					begin
-						if (display_out != test_cases[(minutes / 10)])
-						begin
-							$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
-						end
-					end				
-			endcase
-		end
+			// 1's place of minutes input
+			4'b1011:
+			begin
+				if (display_out != test_cases[(minutes / 10)])
+				begin
+					$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
+				end
+			end				
+		endcase
 	end
 	
 	// Number used to test the inputs
