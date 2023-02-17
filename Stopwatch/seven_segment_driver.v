@@ -21,8 +21,8 @@
 module seven_segment_driver(
     input clock,
     input reset,
-    input [5:0] minutes,
-    input [5:0] seconds,
+    input [6:0] minutes,
+    input [6:0] seconds,
     output reg [3:0] anode_signals,
     output reg [6:0] display_out
 );
@@ -47,42 +47,42 @@ module seven_segment_driver(
 
     // anode activating signals for 4 LEDs, digit period of 2.6ms
     // decoder to generate anode signals 
-    always @(*)
+    always @(LED_activating_counter)
     begin
         case(LED_activating_counter)
             2'b00: 
                 begin
                     // Display the first digit of the minutes number
                     // activate LED1 and Deactivate LED2, LED3, LED4
-                    anode_signals = 4'b0111; 
+                    anode_signals <= 4'b0111; 
                     LED_BCD = minutes / 10;
                 end
             2'b01:
                 begin
                     // Display the second digit of the minutes number
                     // activate LED2 and Deactivate LED1, LED3, LED4
-                    anode_signals = 4'b1011;
+                    anode_signals <= 4'b1011;
                     LED_BCD = minutes % 10;
                 end
             2'b10:
                 begin
                     // Display the first digit of the seconds number
                     // activate LED3 and Deactivate LED2, LED1, LED4
-                    anode_signals = 4'b1101;
+                    anode_signals <= 4'b1101;
                     LED_BCD = seconds / 10;
                 end
             2'b11: 
                 begin
                     // Display the second digit of the seconds number
                     // activate LED4 and Deactivate LED2, LED3, LED1
-                    anode_signals = 4'b1110;
+                    anode_signals <= 4'b1110;
                     LED_BCD = minutes % 10;
                 end
         endcase
     end
     
     // Cathode patterns of the 7-segment LED display 
-    always @(*)
+    always @(LED_BCD)
     begin
         case(LED_BCD)
         4'b0000: display_out <= 7'b0000001; // "0"     

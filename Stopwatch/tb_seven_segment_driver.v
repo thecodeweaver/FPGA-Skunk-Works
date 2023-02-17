@@ -24,8 +24,8 @@ module tb_seven_segment_driver;
     // Inputs 
     reg clock;
     reg reset;
-    reg [5:0] minutes;
-    reg [5:0] seconds;
+    reg [6:0] minutes;
+    reg [6:0] seconds;
 
     // Outputs
     wire [3:0] anode_signals;
@@ -58,6 +58,8 @@ module tb_seven_segment_driver;
 			begin
 				if (display_out != test_cases[(seconds / 10)]) begin
 					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds / 10)]);
+				end else begin
+					$display("10's place of the seconds input has the correct value.");
 				end
 			end
 						
@@ -65,7 +67,9 @@ module tb_seven_segment_driver;
 			4'b1110:
 			begin
 				if (display_out != test_cases[(seconds % 10)]) begin
-					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
+					$display("1's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
+				end else begin
+					$display("1's place of the seconds input has the correct value.");
 				end
 			end
 						
@@ -82,14 +86,14 @@ module tb_seven_segment_driver;
 			begin
 				if (display_out != test_cases[(minutes / 10)])
 				begin
-					$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
+					$display("1's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
 				end
 			end				
 		endcase
 	end
 	
 	// Number used to test the inputs
-	reg [5:0] test_number;
+	reg [6:0] test_number;
 
     // Generate stimulus
     initial begin
@@ -100,10 +104,7 @@ module tb_seven_segment_driver;
         seconds <= 4'b0000;
 
         // Start the 7 segment driver
-        #10 reset <= 0;
-
-        // Wait for global reset
-        #20
+        #5 reset <= 0;
 		
 		// Initialize test cases
 		test_cases[0] = 7'b0000001; // 0
@@ -120,20 +121,20 @@ module tb_seven_segment_driver;
         // Generate stimulus
 
         // Test the seconds input
-        test_number = 6'd0;
-        repeat(60) begin
+        test_number = 7'd0;
+        repeat (60) begin
+			#10; // Propagation delay (does this need to be synced with the clock?)
             seconds <= test_number;
-            #5; // Propagation delay
             test_number <= test_number + 1;
         end
 		
-		seconds <= 6'd0;
+		seconds <= 7'd0;
 
         // Test the minutes input
-        test_number = 6'd0;
-		repeat(100) begin
-            seconds <= test_number;
-            #5; // Propagation delay
+        test_number = 8'd0;
+		repeat (100) begin
+			#10; // Propagation delay
+            minutes <= test_number;
             test_number <= test_number + 1;
         end
     end
