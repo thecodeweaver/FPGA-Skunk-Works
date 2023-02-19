@@ -28,8 +28,8 @@ module tb_time_counter;
 	reg hold_count;
 
 	// Outputs
-	wire [5:0] minutes;
-	wire [5:0] seconds;
+	wire [6:0] minutes;
+	wire [6:0] seconds;
 
 	// Instantiate the Unit Under Test (UUT)
 	time_counter uut (

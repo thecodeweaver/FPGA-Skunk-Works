@@ -53,10 +53,10 @@ module tb_seven_segment_driver;
 	reg [25:0] one_hz_clock_counter;
 	reg one_hz_clock;
 	always @(posedge clock) begin
-		one_hz_clock_counter <= one_hz_clock_counter + 26'd1;
+		one_hz_clock_counter <= one_hz_clock_counter + 1;
 		
 		if (one_hz_clock_counter >= (26'd50000000 - 1))
-			one_hz_clock_counter <= 26'd0;
+			one_hz_clock_counter <= 0;
 			
 		if (one_hz_clock_counter < (26'd50000000 / 2)) // Clock has a 50% duty cycle
             one_hz_clock <= 1'b1; // Output is on for first half of cycle
@@ -108,10 +108,10 @@ module tb_seven_segment_driver;
         // Initialize inputs
         reset <= 1;
         clock <= 0;
-        minutes <= 7'b0000;
-        seconds <= 7'b0000;
+        minutes <= 0;
+        seconds <= 0;
 		
-		one_hz_clock_counter <= 26'd0;
+		one_hz_clock_counter <= 0;
 		one_hz_clock <= 0;
 		
 		// Initialize test cases

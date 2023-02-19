@@ -39,8 +39,8 @@ module seven_segment_driver(
     begin 
         if(reset == 1) begin
             refresh_counter <= 0;
-			anode_signals <= 4'd0;
-			display_out <= 7'd0;
+			anode_signals <= 0;
+			display_out <= 0;
         end else
             refresh_counter <= refresh_counter + 1;
     end
