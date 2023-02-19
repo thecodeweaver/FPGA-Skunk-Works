@@ -30,24 +30,26 @@ module seven_segment_driver(
     reg [3:0] LED_BCD; // Binary signal which indicates which cathodes to toggle to enable LEDs on display
 
     // 17-bit for creating 380Hz refresh rate (I think)
-    reg [17:0] refresh_counter; // the first 2 MSB bits for creating 4 LED-activating signals with 2.6ms digit period
+    reg [16:0] refresh_counter; // the first 2 MSB bits for creating 4 LED-activating signals with 2.6ms digit period
     
     wire [1:0] LED_activating_counter;
 
     // Generate clock signal for creating the 2.6ms digit period (refresh rate for the display)
     always @(posedge clock or posedge reset)
     begin 
-        if(reset==1)
+        if(reset == 1) begin
             refresh_counter <= 0;
-        else
+			anode_signals <= 4'd0;
+			display_out <= 7'd0;
+        end else
             refresh_counter <= refresh_counter + 1;
     end
     
-    assign LED_activating_counter = refresh_counter[17:16];
+    assign LED_activating_counter = refresh_counter[16:15];
 
     // anode activating signals for 4 LEDs, digit period of 2.6ms
     // decoder to generate anode signals 
-    always @(LED_activating_counter)
+    always @(posedge clock)
     begin
         case(LED_activating_counter)
             2'b00: 
@@ -82,7 +84,7 @@ module seven_segment_driver(
     end
     
     // Cathode patterns of the 7-segment LED display 
-    always @(LED_BCD)
+    always @(posedge clock)
     begin
         case(LED_BCD)
         4'b0000: display_out <= 7'b0000001; // "0"     

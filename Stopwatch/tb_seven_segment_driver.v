@@ -48,18 +48,31 @@ module tb_seven_segment_driver;
 
     // Generate 50Mhz clock signal
     always #10 clock = ~clock;
+	
+	// Generate one_hz clock signal from 50Mhz board clock
+	reg [25:0] one_hz_clock_counter;
+	reg one_hz_clock;
+	always @(posedge clock) begin
+		one_hz_clock_counter <= one_hz_clock_counter + 26'd1;
+		
+		if (one_hz_clock_counter >= (26'd50000000 - 1))
+			one_hz_clock_counter <= 26'd0;
+			
+		if (one_hz_clock_counter < (26'd50000000 / 2)) // Clock has a 50% duty cycle
+            one_hz_clock <= 1'b1; // Output is on for first half of cycle
+        else
+            one_hz_clock <= 1'b0; // Output is off for second half of cycle
+	end
 
     // Block to check the value of display_out depending on which digit is enabled
-	// Changed to run at every clock cycle to avoid infinite loop?
-	always @(posedge clock) begin
+	// Changed to run at every clock cycle to avoid infinite loop
+	always @(minutes, seconds) begin
 		case (anode_signals)
 			// 10's place of the seconds input
 			4'b1101:
 			begin
 				if (display_out != test_cases[(seconds / 10)]) begin
-					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds / 10)]);
-				end else begin
-					$display("10's place of the seconds input has the correct value.");
+					$display("10's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b. Current seconds value: %d.", display_out, test_cases[(seconds / 10)], seconds);
 				end
 			end
 						
@@ -67,9 +80,7 @@ module tb_seven_segment_driver;
 			4'b1110:
 			begin
 				if (display_out != test_cases[(seconds % 10)]) begin
-					$display("1's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(seconds % 10)]);
-				end else begin
-					$display("1's place of the seconds input has the correct value.");
+					$display("1's place of the seconds input doesn't match expected value\tdisplay_out = %b expected: %b. Current seconds value: %d.", display_out, test_cases[(seconds % 10)], seconds);
 				end
 			end
 						
@@ -77,7 +88,7 @@ module tb_seven_segment_driver;
 			4'b0111:
 			begin
 				if (display_out != test_cases[(minutes / 10)]) begin
-					$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes / 10)]);
+					$display("10's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b. Current minutes value: %d.", display_out, test_cases[(minutes / 10)], minutes);
 				end
 			end
 					
@@ -86,25 +97,22 @@ module tb_seven_segment_driver;
 			begin
 				if (display_out != test_cases[(minutes / 10)])
 				begin
-					$display("1's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b", display_out, test_cases[(minutes % 10)]);
+					$display("1's place of the minutes input doesn't match expected value\tdisplay_out = %b expected: %b. Current minutes value: %d.", display_out, test_cases[(minutes % 10)], minutes);
 				end
 			end				
 		endcase
 	end
-	
-	// Number used to test the inputs
-	reg [6:0] test_number;
 
     // Generate stimulus
     initial begin
         // Initialize inputs
         reset <= 1;
         clock <= 0;
-        minutes <= 4'b0000;
-        seconds <= 4'b0000;
-
-        // Start the 7 segment driver
-        #5 reset <= 0;
+        minutes <= 7'b0000;
+        seconds <= 7'b0000;
+		
+		one_hz_clock_counter <= 26'd0;
+		one_hz_clock <= 0;
 		
 		// Initialize test cases
 		test_cases[0] = 7'b0000001; // 0
@@ -119,23 +127,22 @@ module tb_seven_segment_driver;
 		test_cases[9] = 7'b0000100; // 9
 
         // Generate stimulus
+		
+		// Start the 7 segment driver
+        #5 reset <= 0;
 
         // Test the seconds input
-        test_number = 7'd0;
         repeat (60) begin
-			#10; // Propagation delay (does this need to be synced with the clock?)
-            seconds <= test_number;
-            test_number <= test_number + 1;
+			if (one_hz_clock_counter == 1'd1)
+				seconds <= seconds + 1;
         end
 		
 		seconds <= 7'd0;
 
         // Test the minutes input
-        test_number = 8'd0;
 		repeat (100) begin
-			#10; // Propagation delay
-            minutes <= test_number;
-            test_number <= test_number + 1;
+			if (one_hz_clock_counter == 1'd0)
+				minutes <= minutes + 1;
         end
     end
 endmodule
