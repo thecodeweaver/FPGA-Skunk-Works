@@ -34,7 +34,7 @@ module seven_segment_driver(
     
     wire [1:0] LED_activating_counter;
 
-    // Generate clock signal for creating the 2.6ms digit period (refresh rate for the display)
+    // Generate clock signal from 50Mhz board clock for creating the 2.6ms digit period (refresh rate for the display)
     always @(posedge clock or posedge reset)
     begin 
         if(reset == 1) begin

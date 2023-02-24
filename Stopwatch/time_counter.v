@@ -19,9 +19,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module time_counter(
-    input wire clock,
-	input wire reset,
-    input wire hold_count,
+    input clock,
+	input reset,
+    input hold_count,
     output reg [6:0] minutes,
     output reg [6:0] seconds
     );
