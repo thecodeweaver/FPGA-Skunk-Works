@@ -18,10 +18,10 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+`define SIM_STOPWATCH
 module stopwatch(
     input clk,
-    input button_start,
-    input button_stop,
+    input hold_count_switch,
 	input button_reset,
 	output [3:0] anode_signals,
 	output [6:0] display_out
@@ -40,7 +40,7 @@ module stopwatch(
 	time_counter counter(
 		.clock(counter_clock),
 		.reset(button_reset),
-		.hold_count(button_stop),
+		.hold_count(hold_count_switch),
 		.minutes(minutes_bus),
 		.seconds(seconds_bus)
 	);

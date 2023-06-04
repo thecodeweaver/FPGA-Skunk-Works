@@ -4,3 +4,7 @@ modelsim.ini
 *.bak
 *.opt
 *.wlf
+transcript
+*.mpf
+*.mti
+*.vstf

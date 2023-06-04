@@ -21,15 +21,19 @@
 module clock_divider(
     input clock,
     output reg new_clock
-    );
+);
 
     reg[27:0] counter = 28'd0;
-    parameter DIVISOR = 28'd50000000; // Divide by 50,000,000 to get 1Hz clock from 50Mhz FPGA clock
+
+    `ifdef SIM_STOPWATCH
+        parameter DIVISOR = 28'd2; // Divide by 2 to get faster clock to simulate full design quickly
+    `else 
+        parameter DIVISOR = 28'd50000000; // Divide by 50,000,000 to get 1Hz clock from 50Mhz FPGA clock
+    `endif
 
     always @(posedge clock)
     begin
         counter <= counter + 28'd1;
-
 
         if (counter >= (DIVISOR - 1))
             counter <= 28'd0;

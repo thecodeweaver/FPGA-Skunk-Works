@@ -7,28 +7,41 @@ module tb_stopwatch;
 
 	// Inputs
 	reg clock;
-	reg start;
-	reg stop;
+	reg hold_count;
 	reg reset;
 	
 	// Outputs
-	reg [3:0] anode_signals;
-	reg [6:0] display_out;
+	wire [3:0] anode_signals;
+	wire [6:0] display_out;
 	
 	// Design under test
 	stopwatch dut(
 		.clk(clock),
-		.button_start(start),
-		.button_stop(stop),
+		.hold_count_switch(hold_count),
 		.button_reset(reset),
 		.anode_signals(anode_signals),
 		.display_out(display_out)
 	);
 	
-	// Generate 50Mhz clock signal
-    always #10 clock = ~clock;
+	// Generate extra fast clock signal to reduce simulation time
+	// 800 Mhz clock signal
+    always #0.625 clock = ~clock;
 	
-	
+	initial begin
+		// Initialize inputs
+		clock <= 0;
+		hold_count <= 0;
+		reset <= 1;
+
+		// Propogation delay
+		#5;
+
+		// Start counting
+		reset <= 0;
+
+		// Let the design run
+		#10000;
+	end
 
 endmodule
 

@@ -29,23 +29,42 @@ module seven_segment_driver(
 
     reg [3:0] LED_BCD; // Binary signal which indicates which cathodes to toggle to enable LEDs on display
 
-    // 17-bit for creating 380Hz refresh rate (I think)
-    reg [16:0] refresh_counter; // the first 2 MSB bits for creating 4 LED-activating signals with 2.6ms digit period
-    
-    wire [1:0] LED_activating_counter;
+    `ifdef SIM_STOPWATCH
+        // 4 bit counter to create faster refresh rate for simulation of full design
+        reg [3:0] refresh_counter;
 
-    // Generate clock signal from 50Mhz board clock for creating the 2.6ms digit period (refresh rate for the display)
-    always @(posedge clock or posedge reset)
-    begin 
-        if(reset == 1) begin
-            refresh_counter <= 0;
-			anode_signals <= 0;
-			display_out <= 0;
-        end else
-            refresh_counter <= refresh_counter + 1;
-    end
-    
-    assign LED_activating_counter = refresh_counter[16:15];
+        wire [1:0] LED_activating_counter;
+
+        always @(posedge clock or posedge reset)
+        begin 
+            if (reset == 1) begin
+                refresh_counter <= 0;
+                anode_signals <= 0;
+                display_out <= 0;
+            end else
+                refresh_counter <= refresh_counter + 1;
+        end
+        
+        assign LED_activating_counter = refresh_counter[3:2]; 
+    `else
+        // 17-bit for creating 380Hz refresh rate (I think)
+        reg [16:0] refresh_counter; // the first 2 MSB bits for creating 4 LED-activating signals with 2.6ms digit period
+        
+        wire [1:0] LED_activating_counter;
+
+        // Generate clock signal from 50Mhz board clock for creating the 2.6ms digit period (refresh rate for the display)
+        always @(posedge clock or posedge reset)
+        begin 
+            if (reset == 1) begin
+                refresh_counter <= 0;
+                anode_signals <= 0;
+                display_out <= 0;
+            end else
+                refresh_counter <= refresh_counter + 1;
+        end
+        
+        assign LED_activating_counter = refresh_counter[16:15];
+    `endif
 
     // anode activating signals for 4 LEDs, digit period of 2.6ms
     // decoder to generate anode signals 
@@ -87,17 +106,17 @@ module seven_segment_driver(
     always @(posedge clock)
     begin
         case(LED_BCD)
-        4'b0000: display_out <= 7'b0000001; // "0"     
-        4'b0001: display_out <= 7'b1001111; // "1" 
-        4'b0010: display_out <= 7'b0010010; // "2" 
-        4'b0011: display_out <= 7'b0000110; // "3" 
-        4'b0100: display_out <= 7'b1001100; // "4" 
-        4'b0101: display_out <= 7'b0100100; // "5" 
-        4'b0110: display_out <= 7'b0100000; // "6" 
-        4'b0111: display_out <= 7'b0001111; // "7" 
-        4'b1000: display_out <= 7'b0000000; // "8"     
-        4'b1001: display_out <= 7'b0000100; // "9" 
-        default: display_out <= 7'b0000001; // "0"
+            4'b0000: display_out <= 7'b0000001; // "0"     
+            4'b0001: display_out <= 7'b1001111; // "1" 
+            4'b0010: display_out <= 7'b0010010; // "2" 
+            4'b0011: display_out <= 7'b0000110; // "3" 
+            4'b0100: display_out <= 7'b1001100; // "4" 
+            4'b0101: display_out <= 7'b0100100; // "5" 
+            4'b0110: display_out <= 7'b0100000; // "6" 
+            4'b0111: display_out <= 7'b0001111; // "7" 
+            4'b1000: display_out <= 7'b0000000; // "8"     
+            4'b1001: display_out <= 7'b0000100; // "9" 
+            default: display_out <= 7'b0000001; // "0"
         endcase
     end
 
