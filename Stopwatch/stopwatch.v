@@ -18,7 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-`define SIM_STOPWATCH
+
+//`define SIM_STOPWATCH
 module stopwatch(
     input clk,
     input hold_count_switch,

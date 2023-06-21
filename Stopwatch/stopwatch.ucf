@@ -1,0 +1,20 @@
+# UCF for the Stopwatch project
+NET "clk" LOC = "B8"; # Clock signal
+NET "hold_count_switch" LOC = "P11"; # Hold count switch (SW0)
+NET "button_reset" LOC = "G12"; # Reset button (BTN0)
+
+# 7 Segment Display
+# Anodes
+NET "anode_signals<0>" LOC = "F12"; # 1st anode signal
+NET "anode_signals<1>" LOC = "J12"; # 2nd anode signal
+NET "anode_signals<2>" LOC = "M13"; 3rd anode signal
+NET "anode_signals<3>" LOC = "K14"; 4th anode signal
+
+# Cathodes
+NET "display_out<0>" LOC = "L14"; # Signal name = CA
+NET "display_out<1>" LOC = "H12"; # Signal name = CB
+NET "display_out<2>" LOC = "N14"; # Signal name = CC
+NET "display_out<3>" LOC = "N11"; # Signal name = CD
+NET "display_out<4>" LOC = "P12"; # Signal name = CE
+NET "display_out<5>" LOC = "L13"; # Signal name = CF
+NET "display_out<6>" LOC = "M12"; # Signal name = CG

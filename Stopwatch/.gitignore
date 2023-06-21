@@ -8,3 +8,6 @@ transcript
 *.mpf
 *.mti
 *.vstf
+
+# Xilinx Project Files
+Stopwatch/
