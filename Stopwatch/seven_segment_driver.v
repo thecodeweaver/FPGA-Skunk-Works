@@ -27,6 +27,39 @@ module seven_segment_driver(
     output reg [6:0] display_out
 );
 
+
+	// Verilog function to divide 2 numbers in a synthesizable way
+	// Inspired by https://verilogcodes.blogspot.com/2015/11/synthesisable-verilog-code-for-division.html
+	
+	//the size of input and output ports of the division module is generic.
+	parameter WIDTH = 7;
+	function [WIDTH-1:0] divide(input [WIDTH-1:0] A, input [WIDTH-1:0] B);
+		//internal variables    
+		reg [WIDTH-1:0] Res = 0;
+		reg [WIDTH-1:0] a1,b1;
+		reg [WIDTH:0] p1;
+		integer i;
+		
+		begin
+			//initialize the variables.
+			a1 = A;
+			b1 = B;
+			p1= 0;
+			for(i = 0; i < WIDTH; i = i + 1) begin //start the for loop
+				p1 = {p1[WIDTH-2:0], a1[WIDTH-1]};
+				a1[WIDTH-1:1] = a1[WIDTH-2:0];
+				p1 = p1-b1;
+				if(p1[WIDTH-1] == 1) begin
+					a1[0] = 0;
+					p1 = p1 + b1;   end
+				else
+					a1[0] = 1;
+			end
+			Res = a1;   
+		end
+	endfunction
+
+
     reg [3:0] LED_BCD; // Binary signal which indicates which cathodes to toggle to enable LEDs on display
 
     `ifdef SIM_STOPWATCH
@@ -97,7 +130,7 @@ module seven_segment_driver(
                     // Display the second digit of the seconds number
                     // activate LED4 and Deactivate LED2, LED3, LED1
                     anode_signals <= 4'b1110;
-                    LED_BCD <= minutes % 10;
+                    LED_BCD <= seconds % 10;
                 end
         endcase
     end

@@ -1,5 +1,7 @@
 # UCF for the Stopwatch project
 NET "clk" LOC = "B8"; # Clock signal
+
+# Switches
 NET "hold_count_switch" LOC = "P11"; # Hold count switch (SW0)
 NET "button_reset" LOC = "G12"; # Reset button (BTN0)
 
