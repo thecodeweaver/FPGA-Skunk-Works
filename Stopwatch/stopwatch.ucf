@@ -9,8 +9,8 @@ NET "button_reset" LOC = "G12"; # Reset button (BTN0)
 # Anodes
 NET "anode_signals<0>" LOC = "F12"; # 1st anode signal
 NET "anode_signals<1>" LOC = "J12"; # 2nd anode signal
-NET "anode_signals<2>" LOC = "M13"; 3rd anode signal
-NET "anode_signals<3>" LOC = "K14"; 4th anode signal
+NET "anode_signals<2>" LOC = "M13"; # 3rd anode signal
+NET "anode_signals<3>" LOC = "K14"; # 4th anode signal
 
 # Cathodes
 NET "display_out<0>" LOC = "L14"; # Signal name = CA

@@ -1,13 +1,13 @@
-// Testbench to test division code
+// Testbench to test modulus code
 // NOTE: Only tests the function
-module tb_division;
+module tb_modulus;
 
-	// Verilog function to divide 2 numbers in a synthesizable way
+	// Verilog function to find the modulus of 2 numbers in a synthesizable way
 	// Inspired by https://verilogcodes.blogspot.com/2015/11/synthesisable-verilog-code-for-division.html
 		
-	//the size of input and output ports of the division module is generic.
+	//the size of input and output ports of the modulus module is generic.
 	parameter WIDTH = 7;
-	function [WIDTH-1:0] divide(input [WIDTH-1:0] A, input [WIDTH-1:0] B);
+	function [WIDTH-1:0] modulus(input [WIDTH-1:0] A, input [WIDTH-1:0] B);
 		//internal variables
 		reg [WIDTH-1:0] a1,b1;
 		reg [WIDTH:0] p1;
@@ -17,7 +17,7 @@ module tb_division;
 			//initialize the variables.
 			a1 = A;
 			b1 = B;
-			p1= 0;
+			p1= 0; // stores 
 			
 			for(i = 0; i < WIDTH; i = i + 1) begin //start the for loop
 				p1 = {p1[WIDTH-2:0], a1[WIDTH-1]};
@@ -31,7 +31,7 @@ module tb_division;
 					a1[0] = 1;
 			end
 				
-			divide = a1;   
+			modulus = p1;   
 		end
 	endfunction
 
@@ -50,9 +50,9 @@ module tb_division;
 		for (i = 0; i < 100; i = i + 1) begin
 			#5;
 			param_A = i;
-			result = divide(param_A, param_B);
+			result = modulus(param_A, param_B);
 			
-			if (result != (param_A / param_B)) begin
+			if (result != (param_A % param_B)) begin
 				test_OK = 1'bx; // Result was incorrect, set to unkown value ('X') to indicate
 			end else
 				test_OK = 1;

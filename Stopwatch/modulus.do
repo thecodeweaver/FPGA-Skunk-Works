@@ -1,17 +1,17 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate -radix unsigned /tb_division/param_A
-add wave -noupdate -radix unsigned /tb_division/param_B
-add wave -noupdate -radix unsigned /tb_division/result
-add wave -noupdate -radix unsigned /tb_division/i
-add wave -noupdate /tb_division/test_OK
-add wave -noupdate -radix decimal /tb_division/divide/divide
-add wave -noupdate -radix unsigned /tb_division/divide/A
-add wave -noupdate -radix unsigned /tb_division/divide/B
-add wave -noupdate /tb_division/divide/a1
-add wave -noupdate /tb_division/divide/b1
-add wave -noupdate /tb_division/divide/p1
-add wave -noupdate /tb_division/divide/i
+add wave -noupdate -radix unsigned /tb_modulus/param_A
+add wave -noupdate -radix unsigned /tb_modulus/param_B
+add wave -noupdate -radix unsigned /tb_modulus/result
+add wave -noupdate -radix unsigned /tb_modulus/i
+add wave -noupdate /tb_modulus/test_OK
+add wave -noupdate -radix decimal /tb_modulus/modulus/modulus
+add wave -noupdate -radix unsigned /tb_modulus/modulus/A
+add wave -noupdate -radix unsigned /tb_modulus/modulus/B
+add wave -noupdate /tb_modulus/modulus/a1
+add wave -noupdate /tb_modulus/modulus/b1
+add wave -noupdate /tb_modulus/modulus/p1
+add wave -noupdate /tb_modulus/modulus/i
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {294 ps} 0}
 quietly wave cursor active 1
