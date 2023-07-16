@@ -13,10 +13,10 @@ NET "anode_signals<2>" LOC = "M13"; # 3rd anode signal
 NET "anode_signals<3>" LOC = "K14"; # 4th anode signal
 
 # Cathodes
-NET "display_out<0>" LOC = "L14"; # Signal name = CA
-NET "display_out<1>" LOC = "H12"; # Signal name = CB
-NET "display_out<2>" LOC = "N14"; # Signal name = CC
+NET "display_out<6>" LOC = "L14"; # Signal name = CA
+NET "display_out<5>" LOC = "H12"; # Signal name = CB
+NET "display_out<4>" LOC = "N14"; # Signal name = CC
 NET "display_out<3>" LOC = "N11"; # Signal name = CD
-NET "display_out<4>" LOC = "P12"; # Signal name = CE
-NET "display_out<5>" LOC = "L13"; # Signal name = CF
-NET "display_out<6>" LOC = "M12"; # Signal name = CG
+NET "display_out<2>" LOC = "P12"; # Signal name = CE
+NET "display_out<1>" LOC = "L13"; # Signal name = CF
+NET "display_out<0>" LOC = "M12"; # Signal name = CG
